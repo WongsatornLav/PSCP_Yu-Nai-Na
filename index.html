@@ -1,11 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lost & Found</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    
+  <header class="navbar">
+    <div class="nav-inner container">
+      <a href="#" class="brand">Lost<span>&</span>Found</a>
+      
+      <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation" />
+      <label for="nav-toggle" class="hamburger" aria-hidden="true">
+        <span></span><span></span><span></span>
+      </label>
+
+      <nav class="nav-links">
+        <a href="#" class="active">Home</a>
+        <a href="#">Report Lost</a>
+        <a href="#">Report Found</a>
+        <a href="#">Items</a>
+        <a href="#">FAQ</a>
+        <a href="#">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Page Frame / Content Area -->
+  <main class="container page">
+    <section class="hero">
+      <h1>Welcome to Lost & Found</h1>
+      <p>Report lost items, browse found items, and reunite belongings with owners.</p>
+      <div class="hero-actions">
+        <a class="btn primary" href="#">Report Lost</a>
+        <a class="btn" href="#">Report Found</a>
+      </div>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <h2>Latest Found Items</h2>
+        <p>Quickly scan newly reported found items near you.</p>
+        <a href="#" class="link">View items →</a>
+      </article>
+      <article class="card">
+        <h2>Report Guidelines</h2>
+        <p>Tips on how to write a helpful report and add photos.</p>
+        <a href="#" class="link">Read more →</a>
+      </article>
+      <article class="card">
+        <h2>Safety & Privacy</h2>
+        <p>Keep exchanges safe and protect your personal information.</p>
+        <a href="#" class="link">Learn more →</a>
+      </article>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <small>© <span id="year"></span> Lost & Found. All rights reserved.</small>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
