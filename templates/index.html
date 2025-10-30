@@ -1,40 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "layout.html" %}
 
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Lost & Found</title>
-  <link rel="stylesheet" href="styles.css" />
-</head>
+{% block title %}Home | Lost & Found{% endblock %}
 
-<body>
-  <header class="navbar">
-    <div class="nav-inner container">
-      <a href="" class="brand">Lost<span>&</span>Found</a>
-
-      <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation" />
-      <label for="nav-toggle" class="hamburger" aria-hidden="true">
-        <span></span><span></span><span></span>
-      </label>
-
-      <nav class="nav-links">
-        <a href="index.html" class="active">Home</a>
-        <a href="rp_L.html">Report Lost</a>
-        <a href="rp_F.html">Report Found</a>
-        <a href="#">Items</a>
-      </nav>
-    </div>
-  </header>
-
+{% block content %}
   <!-- Page Frame / Content Area -->
   <main class="container page">
     <section class="hero">
       <h1>Welcome to Lost & Found</h1>
       <p>Report lost items, browse found items, and reunite belongings with owners.</p>
       <div class="hero-actions">
-        <a class="btn primary" href="rp_L.html">Report Lost</a>
-        <a class="btn" href="#">Report Found</a>
+        <a class="btn primary" href="{{url_for('report_lost')}}">Report Lost</a>
+        <a class="btn" href="{{url_for('report_found')}}">Report Found</a>
       </div>
     </section>
   </main>
@@ -48,6 +24,4 @@
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>
-</body>
-
-</html>
+{% endblock %}

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Document{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+  <div class="nav-inner container">
+      <a href="#" class="brand">Lost<span>&</span>Found</a>
+      
+      <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation" />
+      <label for="nav-toggle" class="hamburger" aria-hidden="true">
+        <span></span><span></span><span></span>
+      </label>
+
+      <nav class="nav-links">
+        <a href="{{url_for('index')}}" class="active">Home</a>
+        <a href="{{url_for('report_lost')}}">Report Lost</a>
+        <a href="{{url_for('report_found')}}">Report Found</a>
+        <a href="#">Items</a>
+      </nav>
+  </div>
+  <main>
+    {% block content %}
+    {% endblock %}
+  </main>
+</body>
+</html>
