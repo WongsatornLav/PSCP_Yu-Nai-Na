@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% block title %}Sign In | Lost & Found{% endblock %}
+{% block content %}
+<div class="report-container">
+  <h1>Sign In</h1>
+  <form>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" placeholder="Enter your email" required>
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" placeholder="Enter your password" required>
+    </div>
+    <button type="submit" class="btn primary">Sign In</button>
+  </form>
+</div>
+{% endblock %}
