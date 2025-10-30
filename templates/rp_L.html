@@ -12,7 +12,7 @@
 
     <header>
         <div class="nav-inner container">
-            <a href="#" class="brand">Lost<span>&</span>Found</a>
+            <a href="index.html" class="brand">Lost<span>&</span>Found</a>
 
             <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation" />
             <label for="nav-toggle" class="hamburger" aria-hidden="true">
@@ -20,12 +20,10 @@
             </label>
 
             <nav class="nav-links">
-                <a href="#" class="active">Home</a>
-                <a href="#">Report Lost</a>
-                <a href="#">Report Found</a>
+                <a href="index.html" class="active">Home</a>
+                <a href="rp_L.html">Report Lost</a>
+                <a href="rp_F.html">Report Found</a>
                 <a href="#">Items</a>
-                <a href="#">FAQ</a>
-                <a href="#">Contact</a>
             </nav>
         </div>
     </header>
@@ -54,6 +52,11 @@
             <div class="form-group">
                 <label for="item-location">สถานที่ที่ทำหาย (Location)</label>
                 <input type="text" id="item-location" placeholder="เช่น ตึก 3, คณะวิทยาศาสตร์" required>
+            </div>
+
+            <div class="form-group">
+                <label for="item-missing-date">วันเวลาที่ทำหาย(missing date)</label>
+                <input type="datetime-local">
             </div>
 
             <button type="submit" id="submit-button">แจ้งของหาย</button>
