@@ -8,28 +8,33 @@
 
             <div class="form-group">
                 <label for="item-title">ของที่พบ/เจอคืออะไร?</label>
-                <input type="text" id="item-title" placeholder="แจ้งของที่ต้องการส่งคืนแลยยย" required>
+                <input type="text" id="item-title-found" placeholder="แจ้งของที่ต้องการส่งคืนแลยยย" required>
             </div>
 
             <div class="form-group">
                 <label for="item-description">รายละเอียดสิ่งของที่พบ (Description)</label>
-                <textarea id="item-description" rows="4" placeholder="เช่น สีดำ, ตกอยู่แถวโรงอาหารคณะวิศวะ"
+                <textarea id="item-description-found" rows="4" placeholder="เช่น สีดำ, ตกอยู่แถวโรงอาหารคณะวิศวะ"
                     required></textarea>
             </div>
 
             <div class="form-group">
                 <label for="item-image">อัปโหลดรูปภาพ (Image)</label>
-                <input type="file" id="item-image" accept="image/*" required>
+                <input type="file" id="item-image-found" accept="image/*" required>
                 <img id="image-preview" src="" alt="ตัวอย่างรูป"
                     style="display:none; max-width: 200px; margin-top: 10px;">
             </div>
 
             <div class="form-group">
                 <label for="item-location">สถานที่ที่พบเจอ (Location)</label>
-                <input type="text" id="item-location" placeholder="เช่น ตึก 3, คณะวิทยาศาสตร์" required>
+                <input type="text" id="item-location-found" placeholder="เช่น ตึก 3, คณะวิทยาศาสตร์" required>
             </div>
 
-            <button type="submit" id="submit-button">แจ้งพบของ</button>
+            <div class="form-group">
+                <label for="item-missing-date">วันเวลาที่ทำหาย(missing date)</label>
+                <input type="datetime-local" id="item-date-found">
+            </div>
+
+            <button type="submit" id="submit-button-found">แจ้งพบของ</button>
             <p id="status-message"></p>
         </form>
     </main>
