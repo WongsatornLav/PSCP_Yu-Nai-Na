@@ -5,7 +5,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Lost & Found</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css')}}">
 </head>
 
 <body>
@@ -20,8 +20,8 @@
 
       <nav class="nav-links">
         <a href="index.html" class="active">Home</a>
-        <a href="rp_L.html">Report Lost</a>
-        <a href="rp_F.html">Report Found</a>
+        <a href="/report-lost">Report Lost</a>
+        <a href="/report-found">Report Found</a>
         <a href="#">Items</a>
       </nav>
     </div>
