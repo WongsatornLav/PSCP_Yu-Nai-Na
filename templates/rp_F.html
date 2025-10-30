@@ -1,33 +1,8 @@
-<!DOCTYPE html>
-<html lang="th">
+{% extends "layout.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>แจ้งพบของ - JER-LEAW-NA</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
+{% block title %}Report Found{% endblock %}
 
-<body>
-
-    <header>
-        <div class="nav-inner container">
-            <a href="index.html" class="brand">Lost<span>&</span>Found</a>
-
-            <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation" />
-            <label for="nav-toggle" class="hamburger" aria-hidden="true">
-                <span></span><span></span><span></span>
-            </label>
-
-            <nav class="nav-links">
-                <a href="index.html" class="active">Home</a>
-                <a href="rp_L.html">Report Lost</a>
-                <a href="rp_F.html">Report Found</a>
-                <a href="#">Items</a>
-            </nav>
-        </div>
-    </header>
-
+{% block content %}
     <main class="report-container">
         <form id="report-form">
 
@@ -61,7 +36,4 @@
 
     <script type="module" src="{{ url_for('static', filename='js/firebase.js') }}"></script>
     <script type="module" src="{{ url_for('static', filename='js/report.js') }}"></script>
-
-</body>
-
-</html>
+{% endblock %}
