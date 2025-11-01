@@ -19,7 +19,7 @@
   <a href="{{ url_for('index') }}" class="{% if request.endpoint == 'index' %}active{% endif %}">Home</a>
   <a href="{{ url_for('report_lost') }}" class="{% if request.endpoint == 'report_lost' %}active{% endif %}">Report Lost</a>
   <a href="{{ url_for('report_found') }}" class="{% if request.endpoint == 'report_found' %}active{% endif %}">Report Found</a>
-  <a href="{{ url_for('signin') }}" class="signin-btn {% if request.endpoint == 'signin' %}active{% endif %}">Sign In</a>
+  <a class="btn" href="{{ url_for('items') }}">View All Items</a>
 </nav>
 
   </div>
