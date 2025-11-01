@@ -26,7 +26,7 @@
   <!-- Cards -->
   <section class="items-grid" id="items-grid">
     {% for item in items %}
-      <article class="item-card" 
+      <article class="item-card"
                data-type="{{ item['type'] }}"
                data-title="{{ item['title']|lower }}"
                data-desc="{{ (item['description'] or '')|lower }}"
