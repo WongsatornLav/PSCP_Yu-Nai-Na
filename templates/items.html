@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block title %}Items Found{% endblock %}
+
+{% block content %}
+<div class="page">
+  <h1 style="text-align:center; color: var(--brand); margin-bottom: 24px;">รายการสิ่งของที่พบ</h1>
+
+  {% if items %}
+    <div class="items-list" style="display: flex; flex-direction: column; gap: 12px;">
+      {% for item in items %}
+      <div class="item-row" style="display: flex; align-items: center; gap: 12px; background: var(--surface); padding: 12px 16px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+        <img src="{{ url_for('static', filename='uploads/' + item[3]) }}" 
+             alt="image" 
+             style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;">
+        <div style="display: flex; gap: 16px; flex-wrap: wrap; color: var(--text); font-weight: 500;">
+          <span>{{ item[1] }}</span> <!-- title -->
+          <span>{{ item[2] }}</span> <!-- description -->
+          <span style="color: var(--muted);">สถานที่: {{ item[4] }}</span>
+          <span style="color: var(--muted);">วันที่: {{ item[5] }}</span>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p style="text-align:center; color: var(--muted);">ยังไม่มีสิ่งของที่ถูกแจ้งพบ</p>
+  {% endif %}
+
+  <div style="text-align:center; margin-top: 30px;">
+    <a href="{{ url_for('index') }}" class="btn primary">กลับหน้าหลัก</a>
+  </div>
+</div>
+{% endblock %}
