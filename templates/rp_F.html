@@ -3,8 +3,7 @@
 
 {% block content %}
 <main class="report-container">
-    <form method="POST" action="{{ url_for('report_found') }}" enctype="multipart/form-data">
-
+    <form id="report-form" method="POST" enctype="multipart/form-data">
         <div class="form-group">
             <label for="item-title-found">ของที่พบ/เจอคืออะไร?</label>
             <input type="text" id="item-title-found" name="title" placeholder="เช่น เจอ AirPods ตกไว้ที่..." required>
@@ -17,21 +16,21 @@
         </div>
 
         <div class="form-group">
-            <label for="item-image-found">อัปโหลดรูปภาพ (Image)</label>
+            <label for="item-image">อัปโหลดรูปภาพ (Image)</label>
             <input type="file" id="item-image-found" name="image" accept="image/*">
         </div>
 
-        <div class="form-group">
-            <label for="item-location-found">สถานที่ที่พบเจอ (Location)</label>
-            <input type="text" id="item-location-found" name="location" placeholder="เช่น หน้าตึกวิศวะ" required>
-        </div>
+            <div class="form-group">
+                <label for="item-location-found">สถานที่ที่พบเจอ (Location)</label>
+                <input type="text" id="item-location-found" name="location" placeholder="เช่น หน้าตึกวิศวะ" required>
+            </div>
 
-        <div class="form-group">
-            <label for="item-date-found">วันเวลาที่พบเจอ</label>
-            <input type="datetime-local" id="item-date-found" name="date">
-        </div>
+            <div class="form-group">
+                <label for="item-date-found">วันเวลาที่พบเจอ</label>
+                <input type="datetime-local" id="item-date-found" name="date">
+            </div>
 
-        <button type="submit" id="submit-button-found">แจ้งพบของ</button>
+            <button type="submit" id="submit-button-found">แจ้งพบของ</button>
     </form>
 </main>
 {% endblock %}

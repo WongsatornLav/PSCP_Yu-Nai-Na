@@ -4,7 +4,7 @@
 
 {% block content %}
 <main class="report-container">
-    <form id="report-form" method="POST" action="{{ url_for('report_lost') }}">
+    <form id="report-form" method="POST" enctype="multipart/form-data">
 
         <div class="form-group">
             <label for="item-title">ของที่หายคืออะไร?</label>
@@ -19,8 +19,8 @@
 
         <div class="form-group">
             <label for="item-image">อัปโหลดรูปภาพ (Image)</label>
-            <input type="file" id="item-image-lost" name="image" accept="image/*" required>
-
+            <input type="file" id="item-image-lost" name="image" accept="image/*">
+            <img id="image-preview" src="" alt="ตัวอย่างรูป">
         </div>
 
         <div class="form-group">

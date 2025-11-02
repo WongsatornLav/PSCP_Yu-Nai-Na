@@ -357,14 +357,12 @@ input[type="datetime-local"]:focus {
 }
 
 .items-search {
-  display: flex;
-  justify-content: center;
   margin-bottom: 15px;
   margin-top: 15px;
 }
 
 .items-search input {
-  width: min(100%, 500px);
+  width: 700px;
   padding: 10px 14px;
   border: 1px solid var(--border);
   border-radius: 10px;
@@ -400,24 +398,6 @@ input[type="datetime-local"]:focus {
   background: var(--brand);
   color: #00131a;
   border-color: var(--brand-strong);
-}
-
-.items-grid {
-  max-width: 1050px;
-  margin: 0 auto;
-  padding: 0 20px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 20px;
-}
-
-.item-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 18px 18px 14px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .item-card:hover {
@@ -485,4 +465,71 @@ input[type="datetime-local"]:focus {
   .items-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* === items page: horizontal card layout === */
+
+.items-grid {
+  max-width: 1050px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 0 20px 40px;
+}
+
+.item-card {
+  display: flex;
+  gap: 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px 18px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+  align-items: flex-start;
+}
+
+.item-card-left {
+  flex: 0 0 140px;
+}
+
+.item-thumb {
+  width: 140px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 12px;
+  background: #0f172a;
+}
+
+.item-thumb.placeholder {
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.item-card-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.item-card-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.item-desc {
+  margin: 0 0 10px 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.item-meta {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-size: 0.8rem;
 }
