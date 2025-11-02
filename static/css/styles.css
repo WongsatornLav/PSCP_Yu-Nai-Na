@@ -486,3 +486,145 @@ input[type="datetime-local"]:focus {
     grid-template-columns: 1fr;
   }
 }
+
+
+
+/* === items page: horizontal card layout === */
+
+.items-grid {
+  max-width: 1050px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 0 20px 40px;
+}
+
+.item-card {
+  display: flex;
+  gap: 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px 18px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+  align-items: flex-start;
+}
+
+.item-card-left {
+  flex: 0 0 140px;
+}
+
+.item-thumb {
+  width: 140px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 12px;
+  background: #0f172a;
+}
+
+.item-thumb.placeholder {
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.item-card-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.item-card-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.item-desc {
+  margin: 0 0 10px 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.item-meta {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-size: 0.8rem;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  background-color: var(--surface); 
+  border: 1px solid var(--border); 
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.admin-table th,
+.admin-table td {
+  border-bottom: 1px solid var(--border); 
+  padding: 12px 15px;
+  text-align: left;
+  color: var(--text); 
+}
+
+.admin-table th {
+  background-color: #1f2937; 
+  color: var(--muted); 
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
+}
+
+.admin-table tbody tr:nth-child(even) {
+  background-color: var(--bg); 
+}
+
+.admin-table tbody tr:hover {
+  background-color: #1f2937;
+}
+
+.admin-table .actions a {
+  margin-right: 10px;
+  color: var(--brand); 
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.admin-table .actions a:hover {
+  color: var(--brand-strong);
+  text-decoration: underline;
+}
+
+.admin-table .actions a.delete {
+  color: #dc3545;
+}
+
+.admin-table .actions a.delete:hover {
+  color: #ff4d6a;
+}
+
+.badge {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-weight: 600;
+  color: #ffffff;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
+.badge-lost {
+  background-color: #dc3545;
+}
+
+.badge-found {
+  background-color: #28a745;
+}

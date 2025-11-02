@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+
+{% block title %}Admin | Manage Items{% endblock %}
+
+{% block content %}
+<main class="container page" style="margin-top: 2rem;">
+    <h1>Admin: Manage Items</h1>
+    <p>Total items in system: {{ items|length }}</p>
+
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Type</th>
+                <th>Location</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>{{ item['id'] }}</td>
+                <td>{{ item['title'] }}</td>
+                <td>
+                    {% if item["type"] == "Lost" %}
+                        <span class="badge badge-lost">Lost</span>
+                    {% else %}
+                        <span class="badge badge-found">Found</span>
+                    {% endif %}
+                </td>
+                <td>{{ item['location'] }}</td>
+                <td>{{ item['date'] }}</td>
+                <td class="actions">
+                    <a href="{{ url_for('admin_edit', item_id=item['id']) }}">Edit</a>
+                    
+                    <a href="{{ url_for('admin_delete', item_id=item['id']) }}" 
+                       class="delete" 
+                       onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</main>
+{% endblock %}

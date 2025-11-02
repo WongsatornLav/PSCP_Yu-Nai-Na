@@ -29,11 +29,16 @@
 
         {% if session.username %}
         <span>Welcome, <strong>{{ session.username }}</strong>!</span>
-        <a href="{{ url_for('logout') }}" class="btn btn-logout">Sign Out</a>
+
+        {% if session.role == 'admin' %}
+        <a href="{{ url_for('admin_manage') }}" class="btn"
+          style="margin-left: 10px; background-color: #ffc107; color: black;">Manage Items</a>
+        {% endif %}
+        <a href="{{ url_for('logout') }}" class="btn btn-logout" style="margin-left: 15px;">Sign Out</a>
 
         {% else %}
-        <a href="{{ url_for('signin') }}" class="btn">Sign In</a>
-        <a href="{{ url_for('login') }}" class="btn primary">Log In</a>
+        <a href="{{ url_for('login') }}" class="btn">Log In</a>
+        <a href="{{ url_for('signin') }}" class="btn primary">Sign In</a>
         {% endif %}
 
       </div>
