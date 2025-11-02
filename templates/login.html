@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block title %}Report Lost{% endblock %}
+
+{% block content %}
+<main class="report-container">
+    <form id="login" method="POST" action="{{ url_for('login') }}">
+
+        <div class="form-group">
+            <label for="item-title"><h1>Login</h1></label>
+        </div>
+
+
+        <div class="form-group">
+            <label for="item-title">username</label>
+            <input type="text" id="item-title-lost" name="username" placeholder="username" required>
+        </div>
+
+        <div class="form-group">
+            <label for="item-title">password</label>
+            <input type="password" id="item-title-lost" name="password" placeholder="password" required>
+        </div>
+
+        <div class="form-group">
+            <label for="item-title">Don't have account yet?  <a href="{{ url_for('signin') }}">click here</a></label>
+        </div>
+
+        <button type="submit" id="submit-button-lost">Login</button>
+        <p id="status-message"></p>
+    </form>
+</main>
+
+{% endblock %}

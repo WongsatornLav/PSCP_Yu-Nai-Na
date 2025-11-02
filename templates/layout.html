@@ -1,25 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}Document{% endblock %}</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
+
 <body>
   <div class="nav-inner container">
-      <a href="{{url_for('index')}}" class="brand">Lost<span>&</span>Found</a>
-      <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation" />
-      <label for="nav-toggle" class="hamburger" aria-hidden="true">
-        <span></span><span></span><span></span>
-      </label>
+    <a href="{{url_for('index')}}" class="brand">Lost<span>&</span>Found</a>
+    <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation" />
+    <label for="nav-toggle" class="hamburger" aria-hidden="true">
+      <span></span><span></span><span></span>
+    </label>
 
-<nav class="nav-links">
-  <a href="{{ url_for('index') }}" class="{% if request.endpoint == 'index' %}active{% endif %}">Home</a>
-  <a href="{{ url_for('report_lost') }}" class="{% if request.endpoint == 'report_lost' %}active{% endif %}">Report Lost</a>
-  <a href="{{ url_for('report_found') }}" class="{% if request.endpoint == 'report_found' %}active{% endif %}">Report Found</a>
-  <a class="btn" href="{{ url_for('items') }}">View All Items</a>
-</nav>
+    <nav class="nav-links">
+      <a href="{{ url_for('index') }}" class="{% if request.endpoint == 'index' %}active{% endif %}">Home</a>
+      {% if session.username %}
+      <a href="{{ url_for('report_lost') }}" class="{% if request.endpoint == 'report_lost' %}active{% endif %}">Report
+        Lost</a>
+      <a href="{{ url_for('report_found') }}"
+        class="{% if request.endpoint == 'report_found' %}active{% endif %}">Report Found</a>
+      {% endif %}
+      <a class="btn" href="{{ url_for('items') }}">View All Items</a>
+      <div class="user-actions">
+
+        {% if session.username %}
+        <span>Welcome, <strong>{{ session.username }}</strong>!</span>
+        <a href="{{ url_for('logout') }}" class="btn btn-logout">Sign Out</a>
+
+        {% else %}
+        <a href="{{ url_for('signin') }}" class="btn">Sign In</a>
+        <a href="{{ url_for('login') }}" class="btn primary">Log In</a>
+        {% endif %}
+
+      </div>
+    </nav>
 
   </div>
   <main>
@@ -27,4 +45,5 @@
     {% endblock %}
   </main>
 </body>
+
 </html>

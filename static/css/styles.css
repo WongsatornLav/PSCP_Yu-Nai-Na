@@ -79,6 +79,9 @@ body {
   display: none;
 }
 
+.user-actions .btn-logout {
+  margin-left: 15px; 
+}
 
 /* Page frame */
 .page {
@@ -174,6 +177,27 @@ select {
 }
 
 input[type="text"]:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--brand);
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.4);
+}
+
+input[type="password"],
+textarea,
+select {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #0f172a;
+  color: var(--text);
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+input[type="password"]:focus,
 textarea:focus,
 select:focus {
   outline: none;

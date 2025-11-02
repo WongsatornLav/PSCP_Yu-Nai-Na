@@ -1,8 +1,11 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session, flash
+from werkzeug.security import generate_password_hash, check_password_hash
 import sqlite3
 from datetime import datetime
 
 app = Flask(__name__)
+app.secret_key = 'your_super_secret_key_here'
+
 
 @app.route('/')
 def index():
@@ -73,7 +76,7 @@ def report_found():
         conn.close()
         return redirect(url_for('index'))
 
-    return render_template('rp_F.html')\
+    return render_template('rp_F.html')
 
 @app.route('/items')
 def items():
@@ -84,6 +87,67 @@ def items():
     items = c.fetchall()
     conn.close()
     return render_template('items.html', items=items)
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        conn = sqlite3.connect('lostandfound.db')
+        c = conn.cursor()
+        c.execute("SELECT * FROM users WHERE username = ?", (username,))
+        user = c.fetchone()
+        conn.close()
+
+        if user and check_password_hash(user[2], password):
+            session['user_id'] = user[0]
+            session['username'] = user[1]
+            session['role'] = user[3]
+            flash(f"Welcome back, {user[1]}!", "success")
+            return redirect(url_for('index'))
+        else:
+            flash("Invalid username or password!", "error")
+
+    return render_template('login.html')
+
+
+@app.route('/signin', methods=['GET', 'POST'])
+def signin():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        confirm_password = request.form['confirm_password']
+
+        if password != confirm_password:
+            flash("Passwords do not match!", "error")
+            return render_template('signin.html')
+
+        hashed_pw = generate_password_hash(password)
+        role = 'user'
+
+        conn = sqlite3.connect('lostandfound.db')
+        c = conn.cursor()
+        try:
+            c.execute(
+                "INSERT INTO users (username, password, role) VALUES (?, ?, ?)",
+                (username, hashed_pw, role)
+            )
+            conn.commit()
+            flash("Account created successfully! Please log in.", "success")
+            return redirect(url_for('login'))
+        except sqlite3.IntegrityError:
+            flash("Username already exists!", "error")
+        finally:
+            conn.close()
+
+    return render_template('signin.html')
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    flash("You have been signed out.", "success")
+    return redirect(url_for('index'))
 
 if __name__=="__main__":
     app.run(debug=True)
