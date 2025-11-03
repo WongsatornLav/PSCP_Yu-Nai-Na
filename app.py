@@ -173,7 +173,7 @@ def logout():
     return redirect(url_for('index'))
 
 @app.route('/admin/manage')
-@admin_required  # <-- ใช้ตัวตรวจสอบสิทธิ์ที่เราเพิ่งสร้าง
+@admin_required
 def admin_manage():
     conn = sqlite3.connect('lostandfound.db')
     conn.row_factory = sqlite3.Row
