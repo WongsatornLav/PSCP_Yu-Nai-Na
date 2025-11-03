@@ -12,7 +12,9 @@ CREATE TABLE IF NOT EXISTS items (
     date TEXT,
     type TEXT,
     image TEXT,
-    created_at TEXT
+    created_at TEXT,
+    latitude REAL,
+    longitude REAL
 );
 """)
 
@@ -24,6 +26,8 @@ CREATE TABLE IF NOT EXISTS users (
     role TEXT NOT NULL
 );
 ''')
+
+c.execute('''UPDATE users SET role = 'admin' WHERE id = 2;''')
 
 conn.commit()
 conn.close()

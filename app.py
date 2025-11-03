@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 import sqlite3
@@ -16,7 +16,7 @@ app.secret_key = 'your_super_secret_key_here'
 def admin_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        # ตรวจสอบว่ามี session หรือไม่ และ role เป็น 'admin' หรื                            อไม่
+        # ตรวจสอบว่ามี session หรือไม่ และ role เป็น 'admin' หรือไม่
         if session.get('role') != 'admin':
             flash("You must be an admin to view this page.", "error")
             return redirect(url_for('index'))
@@ -30,11 +30,15 @@ def index():
     conn.row_factory = sqlite3.Row
     c = conn.cursor()
     c.execute("SELECT * FROM items WHERE type='Lost' ORDER BY id DESC")
-    lost_items = c.fetchall()
+    lost_items = [dict(row) for row in c.fetchall()] 
     c.execute("SELECT * FROM items WHERE type='Found' ORDER BY id DESC")
-    found_items = c.fetchall()
+    found_items = [dict(row) for row in c.fetchall()]
     conn.close()
-    return render_template('index.html', lost_items=lost_items, found_items=found_items)
+    return render_template('index.html', 
+                           lost_items=lost_items, 
+                           found_items=found_items,
+                           lost_items_json=jsonify(lost_items).get_data(as_text=True),
+                           found_items_json=jsonify(found_items).get_data(as_text=True))
 
 
 @app.route('/report_lost', methods=['GET', 'POST'])
@@ -42,31 +46,30 @@ def report_lost():
     if request.method == 'POST':
         title = request.form['title']
         description = request.form['description']
-        location = request.form['location']
         date = request.form['date']
-        file = request.files.get('image')
-        filename = None
-        if file and file.filename:
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(UPLOAD_FOLDER, filename))
+        latitude = request.form['latitude']
+        longitude = request.form['longitude']
+        location = request.form['location']
+
+        imageName = None 
+        if 'image' in request.files:
+            image = request.files['image']
+            if image.filename != '':
+                imageName = secure_filename(image.filename)
+                image.save(os.path.join(UPLOAD_FOLDER, imageName))
 
         conn = sqlite3.connect('lostandfound.db')
         c = conn.cursor()
         c.execute("""
-            INSERT INTO items (title, description, location, date, type, image, created_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-        """, (
-            title,
-            description,
-            location,
-            date,
-            "Lost",
-            filename,
-            datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        ))
+            INSERT INTO items (title, description, date, type, created_at, image, latitude, longitude, location)
+            VALUES (?, ?, ?, 'Lost', ?, ?, ?, ?, ?)
+        """, (title, description, date, datetime.now().strftime('%Y-%m-%d %H:%M:%S'), imageName, latitude, longitude, location))
+        
         conn.commit()
         conn.close()
+        flash("Lost item reported successfully!", "success")
         return redirect(url_for('index'))
+
     return render_template('rp_L.html')
 
 @app.route('/report_found', methods=['GET', 'POST'])
@@ -74,32 +77,30 @@ def report_found():
     if request.method == 'POST':
         title = request.form['title']
         description = request.form['description']
-        location = request.form['location']
         date = request.form['date']
+        latitude = request.form['latitude']
+        longitude = request.form['longitude']
+        location = request.form['location']
 
-        file = request.files.get('image')
-        filename = None
-        if file and file.filename:
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(UPLOAD_FOLDER, filename))
+        imageName = None 
+        if 'image' in request.files:
+            image = request.files['image']
+            if image.filename != '':
+                imageName = secure_filename(image.filename)
+                image.save(os.path.join(UPLOAD_FOLDER, imageName))
 
         conn = sqlite3.connect('lostandfound.db')
         c = conn.cursor()
         c.execute("""
-            INSERT INTO items (title, description, location, date, type, image, created_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-        """, (
-            title,
-            description,
-            location,
-            date,
-            "Found",
-            filename,
-            datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        ))
+            INSERT INTO items (title, description, date, type, created_at, image, latitude, longitude, location)
+            VALUES (?, ?, ?, 'Found', ?, ?, ?, ?, ?)
+        """, (title, description, date, datetime.now().strftime('%Y-%m-%d %H:%M:%S'), imageName, latitude, longitude, location))
+        
         conn.commit()
         conn.close()
+        flash("Found item reported successfully!", "success")
         return redirect(url_for('index'))
+
     return render_template('rp_F.html')
 
 @app.route('/items')
@@ -177,6 +178,7 @@ def admin_manage():
     conn.close()
     return render_template('admin_manage.html', items=items)
 
+
 @app.route('/admin/edit/<int:item_id>', methods=['GET', 'POST'])
 @admin_required
 def admin_edit(item_id):
@@ -187,23 +189,26 @@ def admin_edit(item_id):
     if request.method == 'POST':
         title = request.form['title']
         description = request.form['description']
-        location = request.form['location']
         date = request.form['date']
         item_type = request.form['type']
+        latitude = request.form['latitude']
+        longitude = request.form['longitude']
+        location = request.form.get('location', '')
 
-        #UPDATE ข้อมูลใน DB
         c.execute("""
             UPDATE items 
-            SET title = ?, description = ?, location = ?, date = ?, type = ?
+            SET title = ?, description = ?, date = ?, type = ?,
+                latitude = ?, longitude = ?, location = ?
             WHERE id = ?
-        """, (title, description, location, date, item_type, item_id))
+        """, (title, description, date, item_type, 
+              latitude, longitude, location, 
+              item_id))
         
         conn.commit()
         conn.close()
         flash("Item updated successfully!", "success")
         return redirect(url_for('admin_manage'))
 
-    #(GET) ถ้าเป็นการเปิดหน้าแก้ไข
     c.execute("SELECT * FROM items WHERE id = ?", (item_id,))
     item = c.fetchone()
     conn.close()
@@ -211,6 +216,7 @@ def admin_edit(item_id):
     if item is None:
         flash("Item not found!", "error")
         return redirect(url_for('admin_manage'))
+
     return render_template('admin_edit.html', item=item)
 
 

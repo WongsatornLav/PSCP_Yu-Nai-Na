@@ -628,3 +628,10 @@ input[type="datetime-local"]:focus {
 .badge-found {
   background-color: #28a745;
 }
+
+#map {
+      height: 400px;
+      width: 100%;
+      border-radius: 8px;
+      z-index: 10;
+    }

@@ -4,51 +4,78 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}Document{% endblock %}</title>
+  <title>{% block title %}Document{% endblock %} | Lost & Found</title>
+  
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
 </head>
 
 <body>
-  <div class="nav-inner container">
-    <a href="{{url_for('index')}}" class="brand">Lost<span>&</span>Found</a>
-    <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation" />
-    <label for="nav-toggle" class="hamburger" aria-hidden="true">
-      <span></span><span></span><span></span>
-    </label>
 
-    <nav class="nav-links">
-      <a href="{{ url_for('index') }}" class="{% if request.endpoint == 'index' %}active{% endif %}">Home</a>
-      {% if session.username %}
-      <a href="{{ url_for('report_lost') }}" class="{% if request.endpoint == 'report_lost' %}active{% endif %}">Report
-        Lost</a>
-      <a href="{{ url_for('report_found') }}"
-        class="{% if request.endpoint == 'report_found' %}active{% endif %}">Report Found</a>
-      {% endif %}
-      <a class="btn" href="{{ url_for('items') }}">View All Items</a>
-      <div class="user-actions">
+  <header class="navbar">
+    <div class="nav-inner container">
+      <a href="{{url_for('index')}}" class="brand">Lost<span>&</span>Found</a>
+      <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation" />
+      <label for="nav-toggle" class="hamburger" aria-hidden="true">
+        <span></span><span></span><span></span>
+      </label>
 
+      <nav class="nav-links">
+        <a href="{{ url_for('index') }}" class="{% if request.endpoint == 'index' %}active{% endif %}">Home</a>
+        
         {% if session.username %}
-        <span>Welcome, <strong>{{ session.username }}</strong>!</span>
-
-        {% if session.role == 'admin' %}
-        <a href="{{ url_for('admin_manage') }}" class="btn"
-          style="margin-left: 10px; background-color: #ffc107; color: black;">Manage Items</a>
+        <a href="{{ url_for('report_lost') }}" class="{% if request.endpoint == 'report_lost' %}active{% endif %}">Report Lost</a>
+        <a href="{{ url_for('report_found') }}" class="{% if request.endpoint == 'report_found' %}active{% endif %}">Report Found</a>
         {% endif %}
-        <a href="{{ url_for('logout') }}" class="btn btn-logout" style="margin-left: 15px;">Sign Out</a>
+        
+        <a class="btn" href="{{ url_for('items') }}">View All Items</a>
+        
+        <div class="user-actions">
+          {% if session.username %}
+          <span>Welcome, <strong>{{ session.username }}</strong>!</span>
 
-        {% else %}
-        <a href="{{ url_for('login') }}" class="btn">Log In</a>
-        <a href="{{ url_for('signin') }}" class="btn primary">Sign In</a>
-        {% endif %}
+          {% if session.role == 'admin' %}
+          <a href="{{ url_for('admin_manage') }}" class="btn"
+            style="margin-left: 10px; background-color: #ffc107; color: black;">Manage Items</a>
+          {% endif %}
+          <a href="{{ url_for('logout') }}" class="btn btn-logout" style="margin-left: 15px;">Sign Out</a>
 
+          {% else %}
+          <a href="{{ url_for('login') }}" class="btn">Log In</a>
+          <a href="{{ url_for('signin') }}" class="btn primary">Sign Up</a>
+          {% endif %}
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-messages-container">
+        {% for category, message in messages %}
+          <div class="flash-message flash-{{ category }}">{{ message }}</div>
+        {% endfor %}
       </div>
-    </nav>
+    {% endif %}
+  {% endwith %}
 
-  </div>
-  <main>
-    {% block content %}
-    {% endblock %}
-  </main>
+
+  {% block content %}
+  {% endblock %}
+
+
+  <footer class="footer">
+    <div class="container" style="text-align: center; padding: 2rem 0; color: var(--muted); font-size: 0.9rem;">
+      <p>&copy; <span id="year">2024</span> Lost & Found. All rights reserved.</p>
+    </div>
+  </footer>
+
+
+  {% block scripts %}{% endblock %}
+
 </body>
 
 </html>

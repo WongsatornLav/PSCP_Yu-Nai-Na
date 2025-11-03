@@ -4,7 +4,7 @@
 
 {% block content %}
 <main class="report-container">
-    <form id="report-form" method="POST" action="{{ url_for('report_lost') }}">
+    <form id="report-form" method="POST" enctype="multipart/form-data">
 
         <div class="form-group">
             <label for="item-title">ของที่หายคืออะไร?</label>
@@ -19,14 +19,20 @@
 
         <div class="form-group">
             <label for="item-image">อัปโหลดรูปภาพ (Image)</label>
-            <input type="file" id="item-image-lost" name="image" accept="image/*" required>
-
+            <input type="file" id="item-image-lost" name="image" accept="image/*">
         </div>
 
         <div class="form-group">
-            <label for="item-location">สถานที่ที่ทำหาย (Location)</label>
-            <input type="text" id="item-location-lost" name="location" placeholder="เช่น ตึก 3, คณะวิทยาศาสตร์"
-                required>
+            <label for="map">ปักหมุดสถานที่ (ลากหมุดไปวางได้)</label>
+            <div id="map"></div>
+            <input type="hidden" id="latitude" name="latitude" required>
+            <input type="hidden" id="longitude" name="longitude" required>
+        </div>
+
+        <div class="form-group">
+            <label for="item-location-details">รายละเอียดสถานที่ (ไม่บังคับ)</label>
+            <input type="text" id="item-location-details" name="location"
+                placeholder="เช่น บนโต๊ะหินอ่อน, หน้าห้องน้ำตึก 3 ...">
         </div>
 
         <div class="form-group">
@@ -39,4 +45,32 @@
     </form>
 </main>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const defaultLat = 13.730786908906376;
+        const defaultLng = 100.78121423721315;
+
+        const latInput = document.getElementById('latitude');
+        const lngInput = document.getElementById('longitude');
+
+        const map = L.map('map').setView([defaultLat, defaultLng], 13);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+
+        const marker = L.marker([defaultLat, defaultLng], {
+            draggable: true
+        }).addTo(map);
+
+        marker.on('dragend', function (e) {
+            const position = marker.getLatLng();
+            latInput.value = position.lat;
+            lngInput.value = position.lng;
+        });
+
+        latInput.value = defaultLat;
+        lngInput.value = defaultLng;
+    });
+</script>
 {% endblock %}
