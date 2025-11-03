@@ -23,23 +23,21 @@ def admin_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
-
 @app.route('/')
 def index():
     conn = sqlite3.connect('lostandfound.db')
     conn.row_factory = sqlite3.Row
     c = conn.cursor()
+
     c.execute("SELECT * FROM items WHERE type='Lost' ORDER BY id DESC")
-    lost_items = [dict(row) for row in c.fetchall()] 
+    lost_items = [dict(row) for row in c.fetchall()]
     c.execute("SELECT * FROM items WHERE type='Found' ORDER BY id DESC")
     found_items = [dict(row) for row in c.fetchall()]
     conn.close()
-    return render_template('index.html', 
-                           lost_items=lost_items, 
-                           found_items=found_items,
-                           lost_items_json=jsonify(lost_items).get_data(as_text=True),
-                           found_items_json=jsonify(found_items).get_data(as_text=True))
 
+    return render_template('index.html',
+                           lost_items=lost_items,
+                           found_items=found_items)
 
 @app.route('/report_lost', methods=['GET', 'POST'])
 def report_lost():
@@ -50,6 +48,7 @@ def report_lost():
         latitude = request.form['latitude']
         longitude = request.form['longitude']
         location = request.form['location']
+        contact = request.form['contact']
 
         imageName = None 
         if 'image' in request.files:
@@ -61,16 +60,19 @@ def report_lost():
         conn = sqlite3.connect('lostandfound.db')
         c = conn.cursor()
         c.execute("""
-            INSERT INTO items (title, description, date, type, created_at, image, latitude, longitude, location)
-            VALUES (?, ?, ?, 'Lost', ?, ?, ?, ?, ?)
-        """, (title, description, date, datetime.now().strftime('%Y-%m-%d %H:%M:%S'), imageName, latitude, longitude, location))
-        
+            INSERT INTO items (title, description, date, type, created_at, image,
+            latitude, longitude, location, contact)
+            VALUES (?, ?, ?, 'Lost', ?, ?, ?, ?, ?, ?)""",
+            (title, description, date, datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            imageName, latitude, longitude, location, contact))
+
         conn.commit()
         conn.close()
         flash("Lost item reported successfully!", "success")
         return redirect(url_for('index'))
 
     return render_template('rp_L.html')
+
 
 @app.route('/report_found', methods=['GET', 'POST'])
 def report_found():
@@ -81,6 +83,7 @@ def report_found():
         latitude = request.form['latitude']
         longitude = request.form['longitude']
         location = request.form['location']
+        contact = request.form['contact']
 
         imageName = None 
         if 'image' in request.files:
@@ -92,10 +95,12 @@ def report_found():
         conn = sqlite3.connect('lostandfound.db')
         c = conn.cursor()
         c.execute("""
-            INSERT INTO items (title, description, date, type, created_at, image, latitude, longitude, location)
-            VALUES (?, ?, ?, 'Found', ?, ?, ?, ?, ?)
-        """, (title, description, date, datetime.now().strftime('%Y-%m-%d %H:%M:%S'), imageName, latitude, longitude, location))
-        
+            INSERT INTO items (title, description, date, type, created_at, image,
+            latitude, longitude, location, contact)
+            VALUES (?, ?, ?, 'Found', ?, ?, ?, ?, ?, ?)""",
+            (title, description, date, datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            imageName, latitude, longitude, location, contact))
+
         conn.commit()
         conn.close()
         flash("Found item reported successfully!", "success")
@@ -232,4 +237,4 @@ def admin_delete(item_id):
     return redirect(url_for('admin_manage'))
 
 if __name__=="__main__":
-    app.run(debug=True)
+    app.run()

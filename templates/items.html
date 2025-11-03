@@ -18,33 +18,48 @@
 
   <section class="items-grid" id="items-grid">
     {% for item in items %}
-    <article class="item-card" data-type="{{ item['type'] }}" data-title="{{ item['title']|lower }}"
-      data-desc="{{ (item['description'] or '')|lower }}" data-location="{{ (item['location'] or '')|lower }}">
+    <article class="item-card" 
+      data-type="{{ item['type'] }}" 
+      data-title="{{ item['title']|lower }}"
+      data-desc="{{ (item['description'] or '')|lower }}" 
+      data-location="{{ (item['location'] or '')|lower }}">
+
       <div class="item-card-left">
         {% if item["image"] %}
-        <img src="{{ url_for('static', filename='uploads/' + item['image']) }}" alt="{{ item['title'] }}"
-          class="item-thumb">
+        <img src="{{ url_for('static', filename='uploads/' + item['image']) }}" 
+             alt="{{ item['title'] }}" 
+             class="item-thumb">
         {% else %}
         <div class="item-thumb placeholder">No image</div>
         {% endif %}
       </div>
+
       <div class="item-card-body">
         <div class="item-card-top">
           <h2>{{ item["title"] }}</h2>
           {% if item["type"] == "Lost" %}
-          <span class="badge badge-lost">lost</span>
+          <span class="badge badge-lost">LOST</span>
           {% elif item["type"] == "Found" %}
-          <span class="badge badge-found">found</span>
+          <span class="badge badge-found">FOUND</span>
           {% endif %}
         </div>
+
         <p class="item-desc">{{ item["description"] }}</p>
+
         <div class="item-meta">
           <div class="meta-row">
             <span class="meta-icon">📍</span>
             <span>{{ item["location"] or "—" }}</span>
           </div>
+
+          {% if item["contact"] %}
           <div class="meta-row">
-            <span class="meta-icon">📅</span>
+            <span class="meta-icon">📞</span>
+            <span>{{ item["contact"] }}</span>
+          </div>
+          {% endif %}
+
+          <div class="meta-row">
             <span>{{ item["date"] or "—" }}</span>
           </div>
         </div>
@@ -84,7 +99,6 @@
       const inTitle = card.dataset.title.includes(q);
       const inDesc = card.dataset.desc.includes(q);
       const inLoc = card.dataset.location.includes(q);
-
       const hiddenByFilter = card.dataset.hiddenByFilter === '1';
       if (hiddenByFilter) return;
       card.style.display = (inTitle || inDesc || inLoc) ? 'flex' : 'none';

@@ -10,17 +10,15 @@
       <h1>Welcome {{ session.username }}</h1>
     </span>
     <p>Report lost items, browse found items, and reunite belongings with owners.</p>
+
     <div class="hero-actions">
-
-
-      {% if session.role == 'admin' %}
-      <a href="{{ url_for('admin_manage') }}" class="btn"
-        style="margin-left: 10px; background-color: #ffc107; color: black;">Manage Items</a>
-
+      {% if not session.username %}
+      <a class="btn primary" href="{{ url_for('login') }}">Get started</a>
       {% else %}
-      <a class="btn primary" href="{{url_for('login')}}">Get started</a>
+      <a class="btn primary" href="{{ url_for('items') }}">View all items</a>
       {% endif %}
     </div>
+
   </section>
 </main>
 <!-- Map -->
@@ -40,35 +38,36 @@
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
 
-    const lostItems = JSON.parse({{ lost_items_json | safe }});
-    const foundItems = JSON.parse({{ found_items_json | safe }});
+    const lostItems = {{ lost_items | tojson | safe
+  }};
+  const foundItems = {{ found_items | tojson | safe }};
 
-    var lostIcon = L.icon({
-      iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
-      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-      iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
-    });
-    var foundIcon = L.icon({
-      iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
-      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-      iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
-    });
+  var lostIcon = L.icon({
+    iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+    iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
+  });
+  var foundIcon = L.icon({
+    iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+    iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
+  });
 
-    lostItems.forEach(item => {
-      if (item.latitude && item.longitude) {
-        L.marker([item.latitude, item.longitude], { icon: lostIcon })
-          .addTo(map)
-          .bindPopup(`<b>Lost: ${item.title}</b><br>${item.description || ''}`);
-      }
-    });
+  lostItems.forEach(item => {
+    if (item.latitude && item.longitude) {
+      L.marker([item.latitude, item.longitude], { icon: lostIcon })
+        .addTo(map)
+        .bindPopup(`<b>Lost: ${item.title}</b><br>${item.description || ''}`);
+    }
+  });
 
-    foundItems.forEach(item => {
-      if (item.latitude && item.longitude) {
-        L.marker([item.latitude, item.longitude], { icon: foundIcon })
-          .addTo(map)
-          .bindPopup(`<b>Found: ${item.title}</b><br>${item.description || ''}`);
-      }
-    });
+  foundItems.forEach(item => {
+    if (item.latitude && item.longitude) {
+      L.marker([item.latitude, item.longitude], { icon: foundIcon })
+        .addTo(map)
+        .bindPopup(`<b>Found: ${item.title}</b><br>${item.description || ''}`);
+    }
+  });
   });
 </script>
 {% endblock %}

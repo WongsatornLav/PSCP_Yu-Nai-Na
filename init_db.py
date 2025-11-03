@@ -14,7 +14,8 @@ CREATE TABLE IF NOT EXISTS items (
     image TEXT,
     created_at TEXT,
     latitude REAL,
-    longitude REAL
+    longitude REAL,
+    contact TEXT
 );
 """)
 
