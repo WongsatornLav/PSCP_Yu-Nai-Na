@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS users (
 );
 ''')
 
-c.execute('''UPDATE users SET role = 'admin' WHERE id = 2;''')
+c.execute('''UPDATE users SET role = 'admin' WHERE id = 1;''')
 
 conn.commit()
 conn.close()
