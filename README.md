@@ -1,3 +1,3 @@
-# PSCP_Yu-Nai-Na
-# hello - heart
-# alohaaaa
+# PSCP Yu Nai Na
+# Contributors
+# About this project
